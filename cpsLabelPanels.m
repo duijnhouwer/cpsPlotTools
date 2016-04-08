@@ -19,14 +19,11 @@ function labelHandles=cpsLabelPanels(varargin)
     %       Array of Axes-objects: label these panels;
     %       Figure-object: label the panels in this object;
     %       Empty array: label the panels in the current figure;
-    %
-    %   cpsLabelPanels(H,LBLS,POS) String POS is used to make the labels
-    %   appear 'inside' or (default) 'outside' the panels.
-    %
+    %    
     %   cpsLabelPanels takes 1 optional parameter-value pair:
     %       Parameter   Value:
-    %       'position'  Place the labels 'inside' or (default) 'outside'] 
-    %                    the panels
+    %       'Position'  Place the labels 'inside' or (default) 'outside' 
+    %                   the panels
     %
     %   Any further arguments are relayed to the internal text command that
     %   prints the letters, e.g., cpsLabelPanels(...,'FontSize',14).

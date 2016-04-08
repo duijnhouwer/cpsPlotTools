@@ -1,24 +1,40 @@
 function lh=cpsRefLine(varargin)
     
     %cpsRefLine Draw reference lines
-    %   cpsRefLine(LINETYPE) draws the line specified by LINETYPE into the
-    %   current axes. LINETYPE options are:
-    %       '-': Draws the line Y=0;
-    %       '|': Draws the line X=0;
-    %       '/': Draws the unity line, Y=X;
-    %       '\': Draws the line Y=-X.
+    %   cpsRefLine(LINETYPE,PAR) draws the line specified by LINETYPE with
+    %   optional numerical options PAR into the current axes. LINETYPE
+    %   options are:
+    %       '-': Draws Y=PAR. PAR defaults to 0; 
+    %       '|': Draws X=PAR. PAR defaults to 0;
+    %       '/': Draws Y=PAR(1)*X+PAR(1). PAR defaults to [1 0]; 
+    %       '\': Also draws Y=PAR(1)*X+PAR(1), but PAR defaults to [-1 0];
+    %       '+': Draws the cross X=PAR(1) Y=PAR(2). PAR defaults to [0 0].
     %
-    %   cpsRefLine(H,LINETYPE) draws the reference lines in the axes
+    %   PAR can be a vector or a comma separated list, i.e.,
+    %   cpsRefLine('/',[1 0]) and cpsRefLine('/',1,0) are equivalent
+    %
+    %   The line segments drawn by cpsRefLine are limited by the axis
+    %   limits at the time of calling. Therefore, it is typically best to
+    %   call cpsRefLine after all the data have been plotted or the final
+    %   axis limits are otherwise fixed.
+    %
+    %   cpsRefLine(AX,LINETYPE) draws the reference lines in the axes
     %   specified by the (array of) Axes-object(s) H.
     %
     %   cpsRefLine([],LINETYPE) is equivalent to cpsRefLine(LINETYPE).
     %
-    %   cpsRefLine('-',PAR), where PAR is a number, draws the line Y=PAR
-    %   and cpsRefLine('|',PAR) draws the line X=PAR.
-    %
     %   Multiple lines can be drawn with one call. For example,
-    %   cpsRefLine('-',10,'|','/') draws a cross at X=0, Y=10, and the
+    %   cpsRefLine('+',10,0,'/') draws the cross [X Y]=[10 0], and the
     %   unity line.
+    %
+    %   cpsRefLine(...,'below') draws the line underneath existing graphics
+    %   elements instead of on top.
+    %
+    %   cpsRefLine(...,'noreplace') By default, an existing cpsRefLine with
+    %   the same LINETYPE and PAR values as the one being added is deleted.
+    %   This is useful in situation where data is dynamically added to a
+    %   graph which changes the axis limits. The option 'noreplace'
+    %   overrides this default behavior.
     %
     %   Any further arguments are relayed to the internal plot command that
     %   draws the lines. cpsRefLine('|','-','k--','LineWidth',5) draws a
@@ -28,15 +44,15 @@ function lh=cpsRefLine(varargin)
     %   Line).
     %
     %   Example:
-    %       cpsFindFig('cpsRefLine example');
+    %       cpsFindFig('cpsRefLine example1');
+    %       gcf;
     %       subplot(1,2,1)
-    %       plot(randn(10,1),randn(10,1),'o');
+    %       plot(randn(100,1),randn(100,1),'ro','MarkerFaceColor','r');
     %       subplot(1,2,2)
-    %       plot(randn(10,1),randn(10,1),'o');
+    %       plot(randn(100,1),randn(100,1)/2,'ro','MarkerFaceColor','r');
     %       ax=cpsGetAxes;
-    %       cpsRefLine(ax,'/','k');
-    %       cpsRefLine(ax,'|','-','k--','LineWidth',0.5);
-    %       
+    %       cpsRefLine(ax,'/','k','LineWidth',1);
+    %       cpsRefLine(ax,'+','k--','below'); 
     %
     %   Part of <a href="matlab:plcInfo">cpsPlotTools</a>.
     
@@ -64,11 +80,11 @@ function lh=cpsRefLine(varargin)
         ax=get(get(0,'CurrentFigure'),'CurrentAxes');
     end
     %
-    % Get what linetype to draw (-|/\) and their optional 1-number parameter
-    lineTypes=''; % char -|/\
+    % Get what linetype to draw (-|/\+) and their optional 1-number parameter
+    lineTypes=''; % char -|/\+
     lineParms={}; % cell with number array per lineType only
     while true
-        if numel(varargin)>0 && ischar(varargin{1}) && numel(varargin{1})==1 && any(varargin{1}=='-|/\')
+        if numel(varargin)>0 && ischar(varargin{1}) && numel(varargin{1})==1 && any(varargin{1}=='-|/\+')
             lineTypes(end+1)=varargin{1}; %#ok<AGROW>
             varargin(1)=[];
             optionalNumbers=[];
@@ -81,6 +97,22 @@ function lh=cpsRefLine(varargin)
             break;
         end
     end
+    %
+    % See if the remainder of varargin has cpsRefline specific options
+    idx=find(strcmpi(varargin,'below'));
+    if ~isempty(idx)
+        below=true;
+        varargin(idx)=[];
+    else
+        below=false;
+    end
+    idx=find(strcmpi(varargin,'noreplace'));
+    if ~isempty(idx)
+        noreplace=false;
+        varargin(idx)=[];
+    else
+        noreplace=true;
+    end    
     % Whatever is left of varargin will be relayed to 'plot' as options
     plops=varargin; % PLot OPtionS
     % Add the default linewidth to plops unless one has been explicitely
@@ -90,46 +122,85 @@ function lh=cpsRefLine(varargin)
     end
     % Check that lineTypes have been provided
     if isempty(lineTypes)
-        error('No refline-type provided (''-|/\'').');
+        error('No refline-type provided (''-|/\+'').');
+    end
+    % If the lineType '+' has been provided, expand it to '|-'
+    idx=find(lineTypes=='+');
+    if ~isempty(idx)
+        % Replace + with |-
+        lineTypes=strrep(lineTypes, '+', '|-');
+        % Copy the corresponding parameter(s) if any
+        if numel(lineParms{idx})<=1 
+            lineParms={lineParms{1:idx} lineParms{idx} lineParms{idx+1:end}};
+        elseif numel(lineParms{idx})>1
+            lineParms={lineParms{1:idx-1} lineParms{idx}(1) lineParms{idx}(2)  lineParms{idx+1:end}};
+        end
     end
     %
-    % Loop over ax and lineTypes and draw the lines
+    % Loop over ax and lineTypes and draw the linesdbq
     lh=[];
+    axLims=axis(ax);
     for ai=1:numel(ax)
         for li=1:numel(lineTypes)
-            drawLine(ax(ai),lineTypes(li),lineParms{li},plops); %#ok<AGROW>
-            drawnow;
-            lh(end+1)=drawLine(ax(ai),lineTypes(li),lineParms{li},plops); %#ok<AGROW>
+            lh(end+1)=drawLine(ax(ai),lineTypes(li),lineParms{li} ...
+                ,plops,noreplace,below); %#ok<AGROW>
+        end
+    end
+    % reset the starting limits of the axis or axes. Do this at the very
+    % end, not in the drawing loop, because drawing in one Axes may change
+    % the limits in another. (I find this weird, but that's how it works at
+    % least in Matlab R2014b)
+    if numel(ax)==1
+        axis(ax,axLims);
+    else
+        for ai=1:numel(ax)
+            axis(ax(ai),axLims{ai});
         end
     end
 end
 
-function lh=drawLine(ax,oriChar,nops,plops)
+function lh=drawLine(ax,oriChar,nops,plops,noreplace,below)
     %
     % Create the tag for this line
     tagStr=[mfilename oriChar num2str(nops,'%.6e')];
     %
-    % See if ax already has a cpsRefline of the current oriChar-type, delete that one first
-    delete(findobj(get(ax,'children'),'Tag',tagStr))
+    if ~noreplace
+        % Delete previous line with the same linetype and pars
+        delete(findobj(get(ax,'children'),'Tag',tagStr))
+    end
     %
     areHolding=ishold;
     if ~areHolding
         hold(ax,'on');
     end
     %
-    mini=min(axis(ax));
-    maxi=max(axis(ax));
+    axLims=axis(ax);
+    minx=min(axLims(1:2));
+    maxx=max(axLims(1:2));
+    miny=min(axLims(3:4));
+    maxy=max(axLims(3:4));
     if any(oriChar=='/\')
-        if numel(nops)>0
-            warning(['''' oriChar '''-plot does not take numerical arguments, ignoring the ' num2str(numel(nops)) ' provided.']);
+        if numel(nops)==0
+            if oriChar=='/'
+                slope=1;
+            elseif oriChar=='\'
+                slope=-1;
+            end
+            intercept=0;
+        elseif numel(nops)==1
+            slope=nops;
+            intercept=0;
+        elseif numel(nops)==2
+            slope=nops(1);
+            intercept=nops(2);
+        else
+            warning(['''' oriChar '''-plot takes at most 2 numerical parameters, ignoring the superfluous ' num2str(numel(nops)-2) '.']);
+            v=nops(1);
         end
-        if oriChar=='/'
-            XX=[mini maxi];
-            YY=[mini maxi];
-        elseif oriChar=='\'
-            XX=[mini maxi];
-            YY=[maxi mini];
-        end
+        XX=[minx maxx];
+        YY=XX*slope+intercept;
+        % Might now want to truncate the line the axis-limits to be more
+        % consistent with the - and | behavior but don't think it's needed
     elseif any(oriChar=='-|')
         if numel(nops)==0
             v=0; % the default
@@ -140,11 +211,11 @@ function lh=drawLine(ax,oriChar,nops,plops)
             v=nops(1);
         end
         if oriChar=='-'
-            XX=[mini maxi];
+            XX=[minx maxx];
             YY=[v v];
         else
             XX=[v v];
-            YY=[mini maxi];
+            YY=[miny maxy];
         end
     end
     %
@@ -154,6 +225,12 @@ function lh=drawLine(ax,oriChar,nops,plops)
     % Tag the line so that this function can remove it in case the function gets called
     % again with the same arguments (necessary after rescaling the axes for example).
     set(lh,'Tag',tagStr);
+    %
+    % Put the line at the bottom, underneath the data, if requested
+    if below
+        kids=get(ax,'Children');
+        set(ax,'Children',[kids(2:end); kids(1)]);
+    end
     % reset the hold state, if necessary
     if ~areHolding
         axis auto;

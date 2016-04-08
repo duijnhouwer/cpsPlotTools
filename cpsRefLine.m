@@ -1,38 +1,42 @@
 function lh=cpsRefLine(varargin)
     
-    %plcUnifyAxes Unify axes of multiple (sub)plots
-    %   plcUnifyAxes unifies the X, Y, Z, and C (color) axes of all the
-    %   subplots in the current figure.
+    %cpsRefLine Draw reference lines
+    %   cpsRefLine(LINETYPE) draws the line specified by LINETYPE into the
+    %   current axes. LINETYPE options are:
+    %       '-': Draws the line Y=0;
+    %       '|': Draws the line X=0;
+    %       '/': Draws the unity line, Y=X;
+    %       '\': Draws the line Y=-X.
     %
-    %   plcUnifyAxes(AXSTR) unifies the axes defined in AXSTR, a string
-    %   containing any or all of 'xyzc', of all subplots (Axes-objects) in
-    %   the current figure.
+    %   cpsRefLine(H,LINETYPE) draws the reference lines in the axes
+    %   specified by the (array of) Axes-object(s) H.
     %
-    %   plcUnifyAxes(AX,AXSTR) where AX is an array of Axes-object unifies
-    %   only the specified (sub)plots (which can be in multiple figures).
+    %   cpsRefLine([],LINETYPE) is equivalent to cpsRefLine(LINETYPE).
     %
-    %   plcUnifyAxes([],AXSTR) scales the axes in the current figure,
-    %   equivalent to plcUnifyAxes(AXSTR).
+    %   cpsRefLine('-',PAR), where PAR is a number, draws the line Y=PAR
+    %   and cpsRefLine('|',PAR) draws the line X=PAR.
     %
-    %   plcUnifyAxes(...,AXSTR) scales only the axes defined in AXSTR,
-    %   which is a string containing any or all of 'xyzc'.
+    %   Multiple lines can be drawn with one call. For example,
+    %   cpsRefLine('-',10,'|','/') draws a cross at X=0, Y=10, and the
+    %   unity line.
     %
-    %   Examples:
-    %      plcFindFig('plcUnifyAxes Fig1');
-    %      subplot(1,2,1)
-    %      imagesc(rand(10)); colorbar;
-    %      subplot(1,2,2)
-    %      imagesc(rand(10)*10); colorbar;
-    %      plcUnifyAxes('c');
+    %   Any further arguments are relayed to the internal plot command that
+    %   draws the lines. cpsRefLine('|','-','k--','LineWidth',5) draws a
+    %   thick, dashed black cross. The default LineWidth is 0.5.
     %
-    %      plcFindFig('plcUnifyAxes Fig2');
-    %      plot(randn(100,1)*5,randn(100,1),'ro');
-    %      h=gca;
-    %      plcFindFig('plcUnifyAxes Fig3');
-    %      plot(randn(100,1),randn(100,1)*10,'bo');
-    %      h(end+1)=gca;
-    %      plcUnifyAxes(h,'XY');
-    %      plcTileFigs;
+    %   H=cpsRefLine(...) returns the handles to the lines drawn (class:
+    %   Line).
+    %
+    %   Example:
+    %       cpsFindFig('cpsRefLine example');
+    %       subplot(1,2,1)
+    %       plot(randn(10,1),randn(10,1),'o');
+    %       subplot(1,2,2)
+    %       plot(randn(10,1),randn(10,1),'o');
+    %       ax=cpsGetAxes;
+    %       cpsRefLine(ax,'/','k');
+    %       cpsRefLine(ax,'|','-','k--','LineWidth',0.5);
+    %       
     %
     %   Part of <a href="matlab:plcInfo">cpsPlotTools</a>.
     
@@ -44,17 +48,20 @@ function lh=cpsRefLine(varargin)
     %
     % Get the axes to draw in
     if isempty(varargin{1})
-        % Get all the panels (axes-objects) in the current figure
-        ax=cpsGetAxes('currentFigure');
+        % The default for cpsRefLines in the current axes ((sub)plot)
+        ax=get(get(0,'CurrentFigure'),'CurrentAxes'); % like gca, but no creation
         varargin(1)=[];
     elseif isa(varargin{1},'matlab.graphics.axis.Axes')
+        % One or more (sub)plots explicitely defined.
         ax=varargin{1};
         varargin(1)=[];
     elseif ischar(varargin{1})
-        % First argument is the AXSTR. Default to all axes current figure
-        ax=cpsGetAxes('currentFigure');        
+        % The 'what panels to draw in' arguments is omitted. The first
+        % argument is the LINETYPE. Default to drawing the line in the
+        % current panel. all panels in the current figure
+        ax=get(get(0,'CurrentFigure'),'CurrentAxes');      
     else
-        ax=get(0,'currentFigure'); % doesn't open a window unlike gca
+        ax=get(get(0,'CurrentFigure'),'CurrentAxes');
     end
     %
     % Get what linetype to draw (-|/\) and their optional 1-number parameter
@@ -76,6 +83,11 @@ function lh=cpsRefLine(varargin)
     end
     % Whatever is left of varargin will be relayed to 'plot' as options
     plops=varargin; % PLot OPtionS
+    % Add the default linewidth to plops unless one has been explicitely
+    % specified
+    if ~any(strcmpi('LineWidth',plops))
+        plops=[plops {'LineWidth',0.5}];
+    end
     % Check that lineTypes have been provided
     if isempty(lineTypes)
         error('No refline-type provided (''-|/\'').');
@@ -85,6 +97,8 @@ function lh=cpsRefLine(varargin)
     lh=[];
     for ai=1:numel(ax)
         for li=1:numel(lineTypes)
+            drawLine(ax(ai),lineTypes(li),lineParms{li},plops); %#ok<AGROW>
+            drawnow;
             lh(end+1)=drawLine(ax(ai),lineTypes(li),lineParms{li},plops); %#ok<AGROW>
         end
     end
@@ -95,7 +109,7 @@ function lh=drawLine(ax,oriChar,nops,plops)
     % Create the tag for this line
     tagStr=[mfilename oriChar num2str(nops,'%.6e')];
     %
-    % See if ax already has a jdRefline of the current oriChar-type, delete that one first
+    % See if ax already has a cpsRefline of the current oriChar-type, delete that one first
     delete(findobj(get(ax,'children'),'Tag',tagStr))
     %
     areHolding=ishold;
@@ -142,6 +156,7 @@ function lh=drawLine(ax,oriChar,nops,plops)
     set(lh,'Tag',tagStr);
     % reset the hold state, if necessary
     if ~areHolding
+        axis auto;
         hold(ax,'off')
     end
 end

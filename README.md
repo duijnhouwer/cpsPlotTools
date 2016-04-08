@@ -1,1 +1,1 @@
-"# PlotCraft" 
+"# Capsaicin Plot Tools for Matlab" 

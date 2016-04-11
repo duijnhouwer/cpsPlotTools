@@ -52,4 +52,8 @@ function ax=cpsGetAxes(lvl)
     else
         error('Incorrect argument');
     end
+    %
+    % Reverse the order so that the first Axes object created is first in
+    % the list
+    ax=ax(end:-1:1);
 end

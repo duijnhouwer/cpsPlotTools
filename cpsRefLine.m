@@ -4,11 +4,11 @@ function lh=cpsRefLine(varargin)
     %   cpsRefLine(LINETYPE,PAR) draws the line specified by LINETYPE with
     %   optional numerical options PAR into the current axes. LINETYPE
     %   options are:
-    %       '-': Draws Y=PAR. PAR defaults to 0; 
-    %       '|': Draws X=PAR. PAR defaults to 0;
-    %       '/': Draws Y=PAR(1)*X+PAR(1). PAR defaults to [1 0]; 
-    %       '\': Also draws Y=PAR(1)*X+PAR(1), but PAR defaults to [-1 0];
-    %       '+': Draws the cross X=PAR(1) Y=PAR(2). PAR defaults to [0 0].
+    %       '-': Draws y=PAR. Default PAR is 0; 
+    %       '|': Draws x=PAR. Default PAR is 0;
+    %       '/': Draws y=PAR(2)+x*PAR(2). Default PAR is [1 0]; 
+    %       '\': Also draws y=PAR(2)+x*PAR(2), but PAR defaults to [-1 0];
+    %       '+': Draws a cross x=PAR(1), y=PAR(2). Default PAR is [0 0].
     %
     %   PAR can be a vector or a comma separated list, i.e.,
     %   cpsRefLine('/',[1 0]) and cpsRefLine('/',1,0) are equivalent
@@ -18,13 +18,13 @@ function lh=cpsRefLine(varargin)
     %   call cpsRefLine after all the data have been plotted or the final
     %   axis limits are otherwise fixed.
     %
-    %   cpsRefLine(AX,LINETYPE) draws the reference lines in the axes
-    %   specified by the (array of) Axes-object(s) H.
+    %   cpsRefLine(AX,LINETYPE) draws the reference lines in the panels
+    %   specified by the Axes class handle(s) in H.
     %
     %   cpsRefLine([],LINETYPE) is equivalent to cpsRefLine(LINETYPE).
     %
     %   Multiple lines can be drawn with one call. For example,
-    %   cpsRefLine('+',10,0,'/') draws the cross [X Y]=[10 0], and the
+    %   cpsRefLine('+',10,0,'/') draws the cross x=10, y-0, and the
     %   unity line.
     %
     %   cpsRefLine(...,'below') draws the line underneath existing graphics

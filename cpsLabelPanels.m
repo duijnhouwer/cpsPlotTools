@@ -75,112 +75,106 @@ function labelHandles=cpsLabelPanels(varargin)
     
     % Check that there are open figures
     if isempty(findobj(get(0,'children')))
-        warning('There is no open figure.');
+        warning('No figure to label.');
         return;
     end
     
     
     % Get the panels (axes-objects) to add labels to.
-    if isempty(varargin{1})
+    if numel(varargin)==0
         % Get all the panels (axes-objects) in the current figure
-        ax=cpsGetAxes('currentFigure');
+        ax=cpsGetAxes('CurrentFigure');
+    elseif isempty(varargin{1})
+        % Get all the panels (axes-objects) in the current figure
+        ax=cpsGetAxes('CurrentFigure');
+        varargin(1)=[];
+    elseif isa(varargin{1},'matlab.ui.Figure') 
+        % Get all the panels (axes-objects) in the specified figure
+        ax=cpsGetAxes('CurrentFigure');
         varargin(1)=[];
     elseif isa(varargin{1},'matlab.graphics.axis.Axes')
-        % Input is an (array of) axes-object(s)
+        % Add labels to the (array of) Axes-object(s)
         ax=varargin{1};
         varargin(1)=[];
     else
         % Axis argument ommited, default to all axes in the current figure
-        ax=cpsGetAxes('currentFigure');
+        ax=cpsGetAxes('CurrentFigure');
     end
 
-    % There is only one parameter left and N parameter-value pairs.
+    % There can be at most one parameter left and N parameter-value pairs.
     % Therefore, if the remaining number of varargin is even, the label
-    % should default. If it's odd, then check if the first label is a
-    % string and the subsequent varargin (if any) is also a string (that
-    % should be a parameter name
-    if mod(numel(varargin),2)==0
-        
-
+    % string (the letters that should be used) is not provided and should
+    % default. If it's odd and larger than 1, then
+    % check if the first label is a string and the subsequent varargin (if
+    % any) is also a string (that should be a parameter name.
+    if numel(varargin)==0 || mod(numel(varargin),2)==0
+        % labels were not provided
+        labels=char('A'+(0:numel(ax)-1)); % ABCD... is the default
+    else
+        labels=varargin{1};
+        varargin(1)=[];
+        % Check the values of labels
+        if isempty(labels)
+            labels=char('A'+(0:numel(ax)-1)); % ABCD... is the default
+        elseif numel(labels)==1
+            if ~ischar(labels)
+                error(['Start-letter must be a char, but a ' class(labels) ' was provided.']);
+            else
+               labels=char(labels+(0:numel(ax)-1)); % if labels was 'a', the labels will be 'abcd...'
+            end
+        elseif numel(ax)>numel(labels) && numel(labels)>1
+            % warning('More panels than provided labels, appending whitespace to label array');
+            labels=[labels repmat(' ',1,numel(ax)-numel(labels))];
+        elseif numel(ax)<numel(labels)
+            % warning('Less panels than provided labels, ignoring superfluous labels');
+            labels=labels(1:numel(ax));
+        elseif ~ischar(labels)
+            error('labels should be a string, a cell array of strings, or empty');
+        end
+    end
     
-    
-    
-    % parse the optional parameter in varargin that should not be piped to
+    % parse the optional parameters in varargin that should not be piped to
     % text.m. The option will be removed from varargin, if the option
     % string occurs multiple times in varargin, only the first one is used
-    % by cpsPanelLabel, the others are relayed to text
-    labelPos='outside';
-    if ~isempty(varargin)
-        idx=strcmpi('inside',varargin{:});
-        if ~isempty(idx)
-            labelPos='inside';
-            varargin(idx(1))=[]; % remove first 'inside' from the varargin list
+    % by cpsPanelLabel, the others are relayed to text.
+    % As 20160409, there's only one option: Position
+    idx=find(strcmpi('Position',varargin));
+    if ~isempty(idx)
+        if numel(idx)==numel(varargin)
+            error('Invalid parameter-value pair ''Position'', no value provided');
         end
-    end
-    if ~isempty(varargin)
-        if any(strcmpi('outside',varargin{:}))
-            if strcmpi(labelPos,'inside');
-                error('You defined both ''inside'' and ''outside''.');
-            end
-            labelPos=categorical({'outside'});
-            varargin=varargin(~strcmpi('inside',varargin{:})); % remove the optipm
-        end
+        labelPos=varargin{idx+1};
+        varargin(idx:idx+1)=[];
+    else
+        labelPos='outside'; % the default position
     end
     
-    if ~exist('h','var') || isempty(h)
-        h=get(0,'currentfigure'); % gcf creates an empty figure if non exists, this is better
-        if isempty(h)
-            warning([ '[' mfilename '] No figure to find axes to label in']);
-            return;
-        end
-    end
-    if ischar(h)
-        h=findfig(h,'create',false);
-        if isempty(h)
-            error(['Could not find figure with title ''' h '''.']);
-        end
-    end
-    if ~isa(h,'matlab.ui.Figure')
-        error('Unexpected error, not a figure??');
-    end
-    A=findobj(h,'Type','Axes');
-    if isempty(A)
-        warning([ '[' mfilename '] No axes to label']);
-        return;
-    end
-    A=A(end:-1:1);
-    if ~exist('labels','var') || isempty(labels)
-        labels=char(64+(1:numel(A)));
-    elseif numel(A)>numel(labels)
-        warning('More panels than provided labels, appending whitespace to label array');
-        labels=[labels repmat(' ',1,numel(A)-numel(labels))];
-    elseif numel(A)<numel(labels)
-        warning('Less panels than provided labels, ignoring superfluous labels');
-        labels=labels(1:numel(A));
-    elseif ~ischar(labels)
-        error('labels should be char or empty');
-    end
-    wids=nans(size(A));
-    for i=1:numel(A)
+    % Determine the median panel width. The horizontal offset of the labels
+    % will be scaled to that width
+    panelWids=nans(size(ax));
+    for i=1:numel(ax)
         if labels(i)==' ';
             continue;
         end
-        oldUnits=A(i).Units;
-        A(i).Units='pixels';
-        wids(i)=A(i).Position(3);
-        A(i).Units=oldUnits;
+        oldUnits=ax(i).Units;
+        ax(i).Units='pixels';
+        panelWids(i)=ax(i).Position(3);
+        ax(i).Units=oldUnits;
     end
-    medianWid=nanmedian(wids); clear wids;
+    medianWid=nanmedian(panelWids);
+    clear panelWids;
+
+    %
     labelHandles=[];
-    for i=1:numel(A)
+    for i=1:numel(ax)
         if isnan(labels(i))
             continue;
         end
-        axes(A(i)); %#ok<LAXES>
-        oldUnits=A(i).Units;
-        A(i).Units='pixels';
-        wid=A(i).Position(3);
-        A(i).Units=oldUnits;
+        axes(ax(i)); %#ok<LAXES>
+        oldUnits=ax(i).Units;
+        ax(i).Units='pixels';
+        wid=ax(i).Position(3);
+        ax(i).Units=oldUnits;
         if strcmpi(labelPos,'outside')
             xPos=-0.1*medianWid/wid;
             yPos=1;

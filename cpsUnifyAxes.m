@@ -32,27 +32,38 @@ function cpsUnifyAxes(varargin)
     %
     %   Part of <a href="matlab:plcInfo">cpsPlotTools</a>.
     %
-    %   See also: cpsGetAxes
+    %   See also: cpsGetAxes, cpsUnifyWithinAxes
     
     %   Copyright 2016 Jacob Duijnhouwer
     
     if numel(varargin)>2
         error('Too many input arguments');
     end
-        
+
+    % Note: 'Panel' is synonymoous with an 'Axes-object'
+    
     % Get the Axes-object to scale one or more axes in
-    if isempty(varargin{1})
+    if isempty(varargin) ||  ischar(varargin{1})
+        % No arguments provided, or the first argument is the AXSTR.
+        % Default to all axes current figure
+        panels=cpsGetAxes('currentFigure');    
+    elseif isempty(varargin{1})
         % Get all the panels (axes-objects) in the current figure
         panels=cpsGetAxes('currentFigure');
         varargin(1)=[];
     elseif isa(varargin{1},'matlab.graphics.axis.Axes')
+        % A panel or an array of panels
         panels=varargin{1};
         varargin(1)=[];
-    elseif ischar(varargin{1})
-        % First argument is the AXSTR. Default to all axes current figure
-        panels=cpsGetAxes('currentFigure');        
+    elseif isa(varargin{1},'matlab.ui.Figure')
+        % A figure or an array of figures, get all their Axes children 
+        panels=[];
+        for i=1:numel(varargin{1})
+            panels=[panels cpsGetAxes(varargin{1}(i))]; %#ok<AGROW>
+        end
+        varargin(1)=[];     
     else
-        panels=get(0,'currentFigure'); % doesn't open a window unlike gca
+        error('Incorrect arguments, unexpected error');
     end
     
     % Now check AXSTR
@@ -87,4 +98,6 @@ function cpsUnifyAxes(varargin)
     for a=upper(axStr)
         set(panels,[a 'lim'],[min(s.(a)) max(s.(a))]);
     end
+    %
+    drawnow;
 end

@@ -134,12 +134,12 @@ function h=cpsText(varargin)
         end
         switch lower(LOC)
             case 'topleft'
-                DY=1-DY;
+                                DY=1-DY;
                 hAlign='left';
                 vAlign='top';
             case 'topright'
                 DX=1-DX;
-                DY=1-DY;
+                                DY=1-DY;
                 hAlign='right';
                 vAlign='top';
             case 'bottomleft'
@@ -174,6 +174,10 @@ function h=cpsText(varargin)
                 vAlign='top';
             end
         end
+        
+        
+        vAlign
+        hAlign
         
         % Print the text
         h=text(DX,DY,STR...

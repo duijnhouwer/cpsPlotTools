@@ -35,6 +35,35 @@ function h=cpsText(varargin)
     %
     %   See also: text
     
+<<<<<<< HEAD
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%% Handle varargin list
+    p = inputParser;   % Create an instance of the inputParser class.
+    p.addRequired('str', @(x)ischar(x) || iscell(x) || isnumeric(x));
+    p.addParamValue('location','topleft',@(x)any(strcmpi(x,{'topleft','topright','bottomleft','bottomright','free','central'})));
+    p.addParamValue('xgain',.98,@isnumeric);%(x)x>=0&&x<=1); % no function when location is 'central'
+    p.addParamValue('ygain',.98,@isnumeric);%(x)x>=0&&x<=1); % no function when location is 'central'
+    p.addParamValue('FontSize',8, @(x)x>0); % if smaller than 1, interpreted as proportional to Y-axis, otherwise as points
+    p.addParamValue('Color', [0 0 0 1]);
+    p.addParamValue('BackGroundColor','none'); % e.g. [1 1 1 .75] or 'none'
+    p.addParamValue('maxStrLen',200,@(x)dpxIsWholeNumber(x) && numel(x)>=numel('...[truncated]'));
+    p.parse(str, varargin{:});
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   
+    if ~iscell(str)
+        str={str};
+    end
+    for i=1:numel(str)
+        if isnumeric(str{i}) || islogical(str{i})
+            str{i}=num2str(str{i}(1:min(p.Results.maxStrLen,end))); % no need to num2str more than will be truncated anyway
+        end
+        % truncate the str if needed, trying to plot a very long string (passing an
+        % array to num2str by accident for example) will freeze matlab
+        % and eventually crash to desktop.
+        if numel(str{i})>p.Results.maxStrLen
+            str{i}=[str{i}(1:p.Results.maxStrLen-numel('...[truncated]')) '...[truncated]'];
+        end
+=======
     %   Copyright 2016 Jacob Duijnhouwer
     
     
@@ -42,6 +71,7 @@ function h=cpsText(varargin)
     % We will need at least a STR to print...
     if nargin==0
         error('Not enough input arguments.');
+>>>>>>> cf9905d9415dc60ccbd04fead3947ac4c2c18919
     end
     
     % Get the Axes to print the text in
@@ -134,12 +164,12 @@ function h=cpsText(varargin)
         end
         switch lower(LOC)
             case 'topleft'
-                DY=1-DY;
+                                DY=1-DY;
                 hAlign='left';
                 vAlign='top';
             case 'topright'
                 DX=1-DX;
-                DY=1-DY;
+                                DY=1-DY;
                 hAlign='right';
                 vAlign='top';
             case 'bottomleft'
@@ -174,6 +204,10 @@ function h=cpsText(varargin)
                 vAlign='top';
             end
         end
+        
+        
+        vAlign
+        hAlign
         
         % Print the text
         h=text(DX,DY,STR...

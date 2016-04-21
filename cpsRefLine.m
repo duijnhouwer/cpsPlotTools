@@ -72,10 +72,15 @@ function lh=cpsRefLine(varargin)
     end
     %
     % Get the axes to draw in
-    if isempty(varargin) || isempty(varargin{1})
-        % The default for cpsRefLine is in the current axes ((sub)plot)
+    if isempty(varargin{1})
+        % The default for cpsRefLine is the current axes, i.e., (sub)plot
         ax=get(get(0,'CurrentFigure'),'CurrentAxes'); % like gca, but no creation
         varargin(1) = [];
+    elseif ischar(varargin{1})
+        % The 'what Axes to draw in' arguments is omitted. The first
+        % argument is the LINETYPE. Default to drawing the line in the
+        % current Axes
+        ax=get(get(0,'CurrentFigure'),'CurrentAxes');
     elseif isa(varargin{1},'matlab.graphics.axis.Axes')
         % One or more (sub)plots explicitely defined.
         ax=varargin{1};
@@ -87,14 +92,8 @@ function lh=cpsRefLine(varargin)
             ax = [ax cpsGetAxes(varargin{1}(i))]; %#ok<AGROW>
         end
         varargin(1) = [];
-    elseif ischar(varargin{1})
-        % The 'what Axes to draw in' arguments is omitted. The first
-        % argument is the LINETYPE. Default to drawing the line in the
-        % current Axes (The following is similar to gca, but without
-        % creating one if there is none)
-        ax = cpsGetAxes('CurrentFigure');    
     else
-        ax = cpsGetAxes('CurrentFigure'); 
+        error(['First argument can''t be of type ''' class(varargin{1}) '''.']);
     end
     %
     if isempty(ax)

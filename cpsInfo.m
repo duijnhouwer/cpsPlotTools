@@ -12,13 +12,13 @@ function cpsInfo
     %   Matlab's preferences.
     %
     %   Function       Description
-    %   <a href="matlab:help cpsFindFig">cpsFindFig</a>     Create or find a figure-window by name.
-    %   <a href="matlab:help cpsInfo">cpsInfo</a>        Display this help page.
-    %   <a href="matlab:help cpsLabelPanels">cpsLabelPanels</a> Add lettering to multipart figures.
+    %   <a href="matlab:help cpsFindFig">cpsFindFig</a>     Create or find a figure-window by name
+    %   <a href="matlab:help cpsInfo">cpsInfo</a>        Display this help page
+    %   <a href="matlab:help cpsLabelPanels">cpsLabelPanels</a> Add lettering to multipart figures
     %   <a href="matlab:help cpsRefline">cpsRefline</a>     Draw reference lines
     %   <a href="matlab:help cpsText">cpsText</a>        Add text in standard locations
-    %   <a href="matlab:help cpsTileFigs">cpsTileFigs</a>    Tile all open figure windows on the screen.
-    %   <a href="matlab:help cpsUnifyAxes">cpsUnifyAxes</a>   Unify axes limits within or between (sub)plots.
+    %   <a href="matlab:help cpsTileFigs">cpsTileFigs</a>    Tile all open figure windows on the screen
+    %   <a href="matlab:help cpsUnifyAxes">cpsUnifyAxes</a>   Unify axes limits within or between (sub)plots
     %
     %   Copyright 2016 Jacob Duijnhouwer
     

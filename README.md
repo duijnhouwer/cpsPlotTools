@@ -1,4 +1,4 @@
-"# Capsaicin Plot Tools for Matlab" 
+# Capsaicin Plot Tools for Matlab 
 
     Capsaicin (CPS) Plot Tools simplify common plotting tasks, such as
     adding reference lines or scaling all axes to a global minumum and

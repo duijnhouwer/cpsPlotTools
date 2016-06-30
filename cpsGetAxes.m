@@ -1,15 +1,16 @@
 function ax=cpsGetAxes(lvl)
     
-    %cpsGetAxes Return handles to axes-objects.
-    %   cpsGetAxes(LVL) where LVL is empty, or the string 'currentFigure'
-    %   returns the Axes-objects in the current figure.
+    %cpsGetAxes Return handles to Axes-objects.
+    %   cpsGetAxes returns the Axes-objects in the current figure in the
+    %   order in which they were created.
     %
-    %   cpsGetAxes with no argument is equivalent to cpsGetAxes([]);
+    %   cpsGetAxes('currentFigure') is equivalent to cpsGetAxes.
     %
     %   cpsGetAxes(LVL) where LVL is a Figure-object returns the
     %   Axes-objects in that figure. cpsGetAxes(gcf) is therefore similar
-    %   to cpsGetAxes except that gcf creates a new figure window when
-    %   there are none. LVL can also be an array of Figure-objects.
+    %   to cpsGetAxes('currentFigure') except that gcf creates a new figure
+    %   window when there are none. LVL can also be an array of
+    %   Figure-objects.
     %
     %   cpsGetAxes('session') returns all Axes-objects in the
     %   current Matlab session.
@@ -31,15 +32,17 @@ function ax=cpsGetAxes(lvl)
     %       acAxes=cpsGetAxes([cpsFindFig('a') cpsFindFig('b')])     
     %
     %   Part of <a href="matlab:cpsInfo">cpsPlotTools</a>.
+    %
+    %   See also: gcf
     
     %   Copyright 2016 Jacob Duijnhouwer
     
-    if ~exist('lvl','var') || isempty(lvl)
+    if ~exist('lvl','var')
         ax=findobj(get(get(0,'currentFigure'),'Children')','Type','axes');
     elseif isa(lvl,'matlab.ui.Figure')
         ax=[];
         for i=1:numel(lvl)
-            ax=[ax; findobj(get(lvl(i),'Children'),'Type','axes')];
+            ax=[ax; findobj(get(lvl(i),'Children'),'Type','axes')]; %#ok<AGROW>
         end
     elseif ischar(lvl)
         if strcmpi(lvl,'currentFigure') || isempty(lvl)

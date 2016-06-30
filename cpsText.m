@@ -23,7 +23,7 @@ function h=cpsText(varargin)
     %       'dx'        Determines the horizontal offset from the specified
     %                   location in normalized units. For example, a value
     %                   of 0.02 (the default), and a 'topleft' location,
-    %                   means that STR will be printed 0.02 axis lengths
+    %                   means that STR will be printed 0.02 x-axis lengths
     %                   to the right of the lefthand axis.
     %       'dy'        Like 'dx' but for the vertical direction.
     %

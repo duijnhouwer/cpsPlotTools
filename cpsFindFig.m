@@ -5,16 +5,15 @@ function [h,created] = cpsFindFig(tag,varargin)
     %   focus.
     %
     %   cpsFindFig takes 3 optional parameter-value pairs:
-    %
-    %       Parameter   Value:
+    %       Parameter   Value (default in brackets):
     %       'visible'   Figure visibility upon creation [true] | false
     %       'position'  Figure position in pixels [leftx topy wid hei],
     %                   or an empty array ([], the default) which produces
     %                   a standard-size window.
-    %       'create':   Toggle creation of figure if novel TAG is provided
-    %                   [true] | false
+    %       'create'    Toggle the creation of a new figure when a novel
+    %                   TAG is provided [true] | false.
     %
-    %   [H,CREATED] = cpsFindFig(...) Returns the figures's class object
+    %   [H,CREATED] = cpsFindFig(...) Returns the figures's class object H
     %   and a logical which indicates if a novel figure has been created or
     %   not.
     %
@@ -24,6 +23,9 @@ function [h,created] = cpsFindFig(tag,varargin)
     
     %   Copyright 1998 Bart Krekelberg, 2016 Jacob Duijnhouwer
     
+    if nargin==0
+        error('Not enough input arguments, a figure name is required.');
+    end
     p=inputParser;
     p.addRequired('tag',@ischar);
     p.addOptional('visible',true,@islogical);
@@ -53,7 +55,7 @@ function [h,created] = cpsFindFig(tag,varargin)
             set(h,'Position',p.Results.position);
         end
         drawnow;
-        set(h,'visible',visi);p.Results.create
+        set(h,'visible',visi);
         created=true;
     else
         h=[];

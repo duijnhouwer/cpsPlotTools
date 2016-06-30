@@ -1,17 +1,16 @@
 function labelHandles=cpsLabelPanels(varargin)
     
-    %cpsLabelPanels  Add one-character labels to panels (subplots)
+    %cpsLabelPanels     Add lettering to multipart figures.
     %   cpsLabelPanels adds labels A, B, C, etc. to the subplots in the
     %   current figure window, in the order in which they have been
     %   created.
     %
-    %   cpsLabelPanels(LBLS) String LBLS contains
-    %   the characters by which the panels will be labeled. Insert a space
-    %   to skip a panel. LBLS contains typically a single letter that will
-    %   be used as the label for the first panel, cycling through the ASCII
-    %   table for subsequent panels will be labeled by cycling through the
-    %   ASCII table from that starting point. The default for LBLS is
-    %   'A'.
+    %   cpsLabelPanels(LBLS)  LBLS typically contains a single letter that
+    %   will be used as the label for the first panel, subsequent panels
+    %   will be labeled by cycling through the ASCII table from that
+    %   starting point. The default for LBLS is 'A'. Alternatively, LBLS
+    %   may contain the characters by which the panels will be labeled.
+    %   Insert a space to skip a panel.
     %
     %   By default, cpsLabelPanels(...) will label all panels in the
     %   current figure. Optionally, use cpsLabelPanels(H,...) where
@@ -49,14 +48,12 @@ function labelHandles=cpsLabelPanels(varargin)
     %       set(h,'Color',[0 0 1],'FontSize',18)
     %
     %       % Explicit figure referencing, two methods
-    %       h = findfig('Test2');
+    %       h = cpsFindFig('Test');
     %       subplot(2,1,1);
     %       subplot(2,1,2);
-    %       if rand>.5
-    %           cpsLabelPanels(h); % handle reference
-    %       else
-    %           cpsLabelPanels('Test2'); % title reference
-    %       end
+    %       cpsFindFig('Test2');
+    %       cpsLabelPanels(h,'1'); % handle reference
+    %       cpsLabelPanels('Test2','a'); % title reference
     %
     %       % Freestyle labels (albeit limited to 1 or no character)
     %       h = findfig('Test2');

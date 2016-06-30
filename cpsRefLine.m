@@ -36,7 +36,7 @@ function lh=cpsRefLine(varargin)
     %   cpsRefLine('+',10,0,'/') draws the cross x=10, y-0, and the
     %   unity line.
     %
-    %   cpsRefLine(...,'below') draws the line underneath existing graphics
+    %   cpsRefLine(...,'back') draws the line behind existing graphics
     %   elements instead of on top.
     %
     %   cpsRefLine(...,'noreplace') By default, an existing cpsRefLine with
@@ -61,7 +61,7 @@ function lh=cpsRefLine(varargin)
     %       plot(randn(100,1),randn(100,1)/2,'ro','MarkerFaceColor','r');
     %       ax=cpsGetAxes;
     %       cpsRefLine(ax,'/',[.5 1 2],'k','LineWidth',1);
-    %       cpsRefLine(ax,'+','k--','below'); 
+    %       cpsRefLine(ax,'+','k--','back'); 
     %
     %   Part of <a href="matlab:plcInfo">cpsPlotTools</a>.
     
@@ -123,12 +123,12 @@ function lh=cpsRefLine(varargin)
     end
     %
     % See if the remainder of varargin has cpsRefline specific options
-    idx = find(strcmpi(varargin,'below'));
+    idx = find(strcmpi(varargin,'back'));
     if ~isempty(idx)
-        below = true;
+        back = true;
         varargin(idx) = [];
     else
-        below = false;
+        back = false;
     end
     idx = find(strcmpi(varargin,'noreplace'));
     if ~isempty(idx)
@@ -172,10 +172,10 @@ function lh=cpsRefLine(varargin)
         for t = 1:numel(lineTypes)
             axis(ax(a),axLims{a}); % make sure that the axis limits are up to date, drawLine needs them
             if isempty(lineParms{t})
-                lh(end+1) = drawLine(ax(a),lineTypes(t),[],plops,noreplace,below); %#ok<AGROW>
+                lh(end+1) = drawLine(ax(a),lineTypes(t),[],plops,noreplace,back); %#ok<AGROW>
             else
                 for p = 1:size(lineParms{t},1)
-                    lh(end+1) = drawLine(ax(a),lineTypes(t),lineParms{t}(p,:),plops,noreplace,below); %#ok<AGROW>
+                    lh(end+1) = drawLine(ax(a),lineTypes(t),lineParms{t}(p,:),plops,noreplace,back); %#ok<AGROW>
                 end
             end
            % axis(ax(a),axLims{a});
@@ -190,7 +190,7 @@ function lh=cpsRefLine(varargin)
     end
 end
 
-function lh=drawLine(ax,oriChar,nops,plops,noreplace,below)
+function lh=drawLine(ax,oriChar,nops,plops,noreplace,back)
     %
     % Step 1: Calculate the left/right XX and bottom/top YY
     % 1a. These depend on the current axis limits
@@ -266,8 +266,8 @@ function lh=drawLine(ax,oriChar,nops,plops,noreplace,below)
     % rescaling the axes for example).
     set(lh,'Tag',tagStr);
     %
-    % Put the line at the bottom, underneath the data, if requested
-    if below
+    % Put the line at the bottom, behind the data, if requested
+    if back
         kids = get(ax,'Children');
         set(ax,'Children',[kids(2:end); kids(1)]);
     end

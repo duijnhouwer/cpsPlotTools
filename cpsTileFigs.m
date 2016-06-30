@@ -1,4 +1,4 @@
-function figs=tilefigs(figs)
+function figs=cpsTileFigs(figs)
 %TILEFIGS Tile all open figure windows around on the screen.
 %
 %   TILEFIGS places all open figure windows around on the screen with no
@@ -54,13 +54,13 @@ units  = 'normalized';
 % Set miscellaneous parameter.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-nfigs = length(figs);		% Number of figures.
+nfigs = numel(figs);		% Number of figures.
 
 nh = ceil(sqrt(nfigs));		% Number of figures horisontally.
 nv = ceil(nfigs / nh);		% Number of figures vertically.
 
-nh = max(nh, 2);
-nv = max(nv, 2);
+%nh = max(nh, 2);
+%nv = max(nv, 2);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Get the screen size.

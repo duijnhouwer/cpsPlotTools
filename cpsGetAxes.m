@@ -31,7 +31,7 @@ function ax=cpsGetAxes(lvl)
     %       abAxes=cpsGetAxes(h(1:2))
     %       acAxes=cpsGetAxes([cpsFindFig('a') cpsFindFig('b')])     
     %
-    %   Part of <a href="matlab:cpsInfo">cpsPlotTools</a>.
+    %   Part of <a href="matlab:cpsPlotTools">cpsPlotTools</a>.
     %
     %   See also: gcf
     

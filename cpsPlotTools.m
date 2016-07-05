@@ -13,7 +13,7 @@ function cpsPlotTools
     %
     %   Function       Description
     %   <a href="matlab:help cpsFindFig">cpsFindFig</a>     Create or find a figure-window by name
-    %   <a href="matlab:help cpsPlotTools">cpsPlotTools</a>   Display this help page
+    %   <a href="matlab:help cpsPlotTools">cpsPlotTools</a> Display this help page
     %   <a href="matlab:help cpsLabelPanels">cpsLabelPanels</a> Add lettering to multipart figures
     %   <a href="matlab:help cpsRefline">cpsRefline</a>     Draw reference lines
     %   <a href="matlab:help cpsText">cpsText</a>        Add text in standard locations

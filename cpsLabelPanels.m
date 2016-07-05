@@ -63,7 +63,7 @@ function labelHandles=cpsLabelPanels(varargin)
     %       subplot(2,2,4);
     %       cpsLabelPanels(h,'A2 Z');
     %
-    %   Part of <a href="matlab:cpsInfo">cpsPlotTools</a>.
+    %   Part of <a href="matlab:cpsPlotTools">cpsPlotTools</a>.
     %
     %   See also: text, cpsFindFig
     

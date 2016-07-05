@@ -13,7 +13,7 @@ Matlab's preferences.
  
 Function       Description
 cpsFindFig     Create or find a figure-window by name
-cpsInfo        Display this help page
+cpsPlotTools   Display this help page
 cpsLabelPanels Add lettering to multipart figures
 cpsRefline     Draw reference lines
 cpsText        Add text in standard locations

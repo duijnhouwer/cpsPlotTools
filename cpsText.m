@@ -31,7 +31,7 @@ function h=cpsText(varargin)
     %
     %   H=cpsText(...) returns a handle to the created Text-object.
     %
-    %   Part of <a href="matlab:cpsInfo">cpsPlotTools</a>.
+    %   Part of <a href="matlab:cpsPlotTools">cpsPlotTools</a>.
     %
     %   See also: text
     

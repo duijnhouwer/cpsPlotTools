@@ -17,7 +17,7 @@ function [h,created] = cpsFindFig(tag,varargin)
     %   and a logical which indicates if a novel figure has been created or
     %   not.
     %
-    %   Part of <a href="matlab:cpsInfo">cpsPlotTools</a>.
+    %   Part of <a href="matlab:cpsPlotTools">cpsPlotTools</a>.
     %
     %   See also: figure
     

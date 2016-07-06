@@ -11,14 +11,18 @@ command window or editor followed by the tab-key lists the
 functions. Provided, of course, that tab completion is enabled in
 Matlab's preferences.
  
-Function       Description
-cpsFindFig     Create or find a figure-window by name
-cpsPlotTools   Display this help page
-cpsLabelPanels Add lettering to multipart figures
-cpsRefline     Draw reference lines
-cpsText        Add text in standard locations
-cpsTileFigs    Tile all open figure windows on the screen
-cpsUnifyAxes   Unify axes limits within or between (sub)plots
+cpsArrange     - Rearrange the occlusion in the current Axes
+cpsFindFig     - Create or find a figure-window by name
+cpsGetAxes     - Return handles to Axes-objects
+cpsLabelPanels - Add lettering to multipart figures
+cpsLimits      - Selectively set axis limits
+cpsRefLine     - Draw reference lines
+cpsText        - Add text in standard locations
+cpsTileFigs    - Tile all open figure windows on the screen
+cpsUnifyAxes   - Unify axes limits within or between (sub)plots
+
+This overview (with hyperlinks) can be displayed in the Matlab
+command window by typing `help cpsPlotTools`.
  
 Copyright 2016 Jacob Duijnhouwer
 

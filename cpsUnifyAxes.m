@@ -1,6 +1,5 @@
 function cpsUnifyAxes(varargin)
-    
-    %cpsUnifyAxes   Unify axes limits within or between (sub)plots
+    %cpsUnifyAxes Unify axes limits within or between (sub)plots
     %   cpsUnifyAxes unifies the limits of the X, Y, Z, and C (color) axes
     %   of all Axes-objects, i.e., (sub)plots, in the current figure.
     %
@@ -58,7 +57,7 @@ function cpsUnifyAxes(varargin)
     %       cpsUnifyAxes(h,'XY');
     %       cpsTileFigs;
     %
-    %   Part of <a href="matlab:plcInfo">cpsPlotTools</a>.
+    %   Part of <a href="matlab:help cpsPlotTools">cpsPlotTools</a>.
     %
     %   See also: cpsGetAxes
     

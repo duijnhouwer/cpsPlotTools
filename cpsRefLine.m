@@ -63,7 +63,9 @@ function lh=cpsRefLine(varargin)
     %       cpsRefLine(ax,'/',[.5 1 2],'k','LineWidth',1);
     %       cpsRefLine(ax,'+','k--','back'); 
     %
-    %   Part of <a href="matlab:plcInfo">cpsPlotTools</a>.
+    %   Part of <a href="matlab:help cpsPlotTools">cpsPlotTools</a>.
+    %
+    %   See also: refline
     
     %   Copyright 2016 Jacob Duijnhouwer
     

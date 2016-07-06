@@ -1,6 +1,6 @@
 function ax=cpsGetAxes(lvl)
     
-    %cpsGetAxes Return handles to Axes-objects.
+    %cpsGetAxes Return handles to Axes-objects
     %   cpsGetAxes returns the Axes-objects in the current figure in the
     %   order in which they were created.
     %
@@ -31,7 +31,7 @@ function ax=cpsGetAxes(lvl)
     %       abAxes=cpsGetAxes(h(1:2))
     %       acAxes=cpsGetAxes([cpsFindFig('a') cpsFindFig('b')])     
     %
-    %   Part of <a href="matlab:cpsPlotTools">cpsPlotTools</a>.
+    %   Part of <a href="matlab:help cpsPlotTools">cpsPlotTools</a>.
     %
     %   See also: gcf
     

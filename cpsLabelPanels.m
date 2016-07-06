@@ -1,6 +1,6 @@
 function labelHandles=cpsLabelPanels(varargin)
     
-    %cpsLabelPanels     Add lettering to multipart figures.
+    %cpsLabelPanels     Add lettering to multipart figures
     %   cpsLabelPanels adds labels A, B, C, etc. to the subplots in the
     %   current figure window, in the order in which they have been
     %   created.
@@ -63,7 +63,7 @@ function labelHandles=cpsLabelPanels(varargin)
     %       subplot(2,2,4);
     %       cpsLabelPanels(h,'A2 Z');
     %
-    %   Part of <a href="matlab:cpsPlotTools">cpsPlotTools</a>.
+    %   Part of <a href="matlab:help cpsPlotTools">cpsPlotTools</a>.
     %
     %   See also: text, cpsFindFig
     

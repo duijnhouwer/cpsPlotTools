@@ -21,7 +21,7 @@ function cpsArrange(h,opt)
     %         pause(1);
     %      end
     %
-    %   Part of <a href="matlab:cpsPlotTools">cpsPlotTools</a>.
+    %   Part of <a href="matlab:help cpsPlotTools">cpsPlotTools</a>.
     
     narginchk(2,2)
     if ~isgraphics(h)

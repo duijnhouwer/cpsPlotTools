@@ -23,5 +23,8 @@ Matlab's preferences.
 | cpsTileFigs    | Tile all open figure windows on the screen|
 | cpsUnifyAxes   | Unify axes limits within or between (sub)plots|
 
+This overview can be brought up in the Matlab command window by
+running `help cpsPlotTools`. 
+
  
 Copyright 2016 Jacob Duijnhouwer

@@ -11,7 +11,7 @@ command window or editor followed by the Tab-key lists the
 functions. Provided, of course, that tab completion is enabled in
 Matlab's preferences.
 
-|Function (alphabetical) | Short description|
+|:Function (alphabetical) |: Short description|
 |-------------------------|----------------|
 | cpsArrange     | Rearrange the occlusion in the current Axes|
 | cpsFindFig     | Create or find a figure-window by name|

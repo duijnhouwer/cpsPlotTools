@@ -6,13 +6,18 @@ maximum. Some functions aim to provide an improvement over built-in
 MatLab functions of the corresponding names. For example, compare
 `cpsFindFig` with `figure` and `cpsText` with `text`.
  
+The following table is an overview of the function. This overview 
+can be brought up in the Matlab command window with `help 
+cpsPlotTools`, and provides links to the help texts of each 
+function. 
+
 Because all Capsaicin functions start with 'cps', typing 'cps' in
 command window or editor followed by the Tab-key lists the
 functions. Provided, of course, that tab completion is enabled in
 Matlab's preferences.
 
-|:Function (alphabetical) |: Short description|
-|-------------------------|----------------|
+|Function (alphabetical) |Short description|
+|------------------------|----------------|
 | cpsArrange     | Rearrange the occlusion in the current Axes|
 | cpsFindFig     | Create or find a figure-window by name|
 | cpsGetAxes     | Return handles to Axes-objects|
@@ -23,8 +28,7 @@ Matlab's preferences.
 | cpsTileFigs    | Tile all open figure windows on the screen|
 | cpsUnifyAxes   | Unify axes limits within or between (sub)plots|
 
-This overview can be brought up in the Matlab command window by
-running `help cpsPlotTools`. 
+ 
 
  
 Copyright 2016 Jacob Duijnhouwer

@@ -9,7 +9,7 @@ For convenience, all files start with `cps`. This aids recognition and has the a
 The following is an alphabetical list of the most important functions with a short description. This overview 
 can be brought up in the Matlab command window with `help cpsPlotTools`. Each function has an extensive help-text for use in the command window (for instance, type `help cpsRefLine`).
 
- |Function (alphabetical) |Short description|
+|Function (alphabetical) |Short description|
 |------------------------|----------------|
 | cpsArrange     | Rearrange the occlusion in the current Axes|
 | cpsFindFig     | Create or find a figure-window by name|

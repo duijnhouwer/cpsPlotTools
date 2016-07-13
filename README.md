@@ -1,22 +1,15 @@
 # Capsaicin Plot Tools for Matlab 
 
-Capsaicin (CPS) Plot Tools simplify common plotting tasks, such as
-adding reference lines or scaling all axes to a global minumum and
-maximum. Some functions aim to provide an improvement over built-in
-MatLab functions of the corresponding names. For example, compare
-`cpsFindFig` with `figure` and `cpsText` with `text`.
- 
-The following table is an overview of the function. This overview 
-can be brought up in the Matlab command window with `help 
-cpsPlotTools`, and provides links to the help texts of each 
-function. 
+Capsaicin (CPS) Plot Tools facilitate many common tasks in the creation of scientific figures, often with no more than a single command. Examples are lettering multi-panel figures, scaling panel axis limits to a global minimum and maximum, and adding reference lines.
 
-Because all Capsaicin functions start with 'cps', typing 'cps' in
-command window or editor followed by the Tab-key lists the
-functions. Provided, of course, that tab completion is enabled in
-Matlab's preferences.
+The toolbox has a consistent syntax and nomenclature throughout and is designed to be as no-nonsense as possible, i.e., to not override or clash with any default Matlab styles and functions.
 
-|Function (alphabetical) |Short description|
+For convenience, all files start with `cps`. This aids recognition and has the added benefit that typing `cps` followed by the Tab-key will bring up a list of all available cpsPlotTools functions on your path. Provided, of course, that Tab-completion is enabled in Matlab's preferences.
+
+The following is an alphabetical list of the most important functions with a short description. This overview 
+can be brought up in the Matlab command window with `help cpsPlotTools`. Each function has an extensive help-text for use in the command window (for instance, type `help cpsRefLine`).
+
+ |Function (alphabetical) |Short description|
 |------------------------|----------------|
 | cpsArrange     | Rearrange the occlusion in the current Axes|
 | cpsFindFig     | Create or find a figure-window by name|
@@ -28,7 +21,6 @@ Matlab's preferences.
 | cpsTileFigs    | Tile all open figure windows on the screen|
 | cpsUnifyAxes   | Unify axes limits within or between (sub)plots|
 
- 
-
+After install, run `showdemo cpsDemo` to see a few illustrated examples.
  
 Copyright 2016 Jacob Duijnhouwer

@@ -21,7 +21,7 @@ function labelHandles=cpsLabelPanels(varargin)
     %    
     %   cpsLabelPanels takes 1 optional parameter-value pair:
     %       Parameter   Value:
-    %       'Position'  Place the labels 'inside' or (default) 'outside' 
+    %       'Location'  Place the labels 'inside' or (default) 'outside' 
     %                   the panels
     %
     %   Any further arguments are relayed to the internal text command that
@@ -134,16 +134,16 @@ function labelHandles=cpsLabelPanels(varargin)
     % text.m. The option will be removed from varargin, if the option
     % string occurs multiple times in varargin, only the first one is used
     % by cpsPanelLabel, the others are relayed to text.
-    % As 20160409, there's only one option: Position
-    idx=find(strcmpi('Position',varargin));
+    % As of 20160409, there's only one option: Location
+    idx=find(strcmpi('Location',varargin));
     if ~isempty(idx)
         if numel(idx)==numel(varargin)
-            error('Invalid parameter-value pair ''Position'', no value provided');
+            error('Invalid parameter-value pair ''Location'', no value provided');
         end
         labelPos=varargin{idx+1};
         varargin(idx:idx+1)=[];
     else
-        labelPos='outside'; % the default position
+        labelPos='outside'; % the default Location
     end
     
     % Determine the median panel width. The horizontal offset of the labels
@@ -176,7 +176,7 @@ function labelHandles=cpsLabelPanels(varargin)
             xPos=-0.1*medianWid/wid;
             yPos=1;
         else
-            xPos=0.025*medianWid/wid;
+            xPos=0.05*medianWid/wid;
             yPos=0.95;
             % warning('need to make hei also adaptive to different panel heights')
         end
@@ -201,7 +201,7 @@ function labelHandles=cpsLabelPanels(varargin)
             t.HorizontalAlignment='left';
             t.VerticalAlignment='top';
         else
-            error(['Unknown label position option: ''' labelPos '''.']);
+            error(['Unknown label Location option: ''' labelPos '''.']);
         end
         labelHandles(end+1)=t; %#ok<AGROW>
     end

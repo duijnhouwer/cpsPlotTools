@@ -51,9 +51,6 @@ function [h,created] = cpsFindFig(tag,varargin)
             'visible','off','name',tag,'menubar','figure',...
             'numbertitle','off',...
             'paperunits','centimeters');
-        if ~isempty(p.Results.position)
-            set(h,'Position',p.Results.position);
-        end
         drawnow;
         set(h,'visible',visi);
         created=true;
@@ -61,5 +58,8 @@ function [h,created] = cpsFindFig(tag,varargin)
         h=[];
         created=false;
         return;
+    end
+    if ~isempty(p.Results.position)
+        set(h,'Position',p.Results.position);
     end
 end

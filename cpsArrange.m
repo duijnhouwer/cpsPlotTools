@@ -6,7 +6,7 @@ function cpsArrange(h,opt)
     %
     %   cpsArrange(H,'front') sends it to the front.
     %
-    %   When H is an array of graphics objects, the first element will be
+    %   When H is an array of graphics objects, the last element will be
     %   the frontmost (backmost) object followed by the rest if the option
     %   is 'front' ('back').
     %
@@ -30,11 +30,10 @@ function cpsArrange(h,opt)
     if ~any(strcmpi(opt,{'front','back'}))
         error('Arrange option should be ''front'' or ''back''.');
     end 
-    kids = get(gca,'Children');
     
-    for hi = numel(h):-1:1
-        % reverse iterate so the first element is the 'opt'-most
-        thisH = h(hi); 
+    for hi = 1:numel(h)
+        kids = get(gca,'Children');
+        thisH = h(hi);
         if ~any(kids==thisH)
             error('Provided Graphics handle is not in the current axis');
         end

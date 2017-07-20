@@ -148,7 +148,7 @@ function labelHandles=cpsLabelPanels(varargin)
     
     % Determine the median panel width. The horizontal offset of the labels
     % will be scaled to that width
-    panelWids=nans(size(ax));
+    panelWids=nan(size(ax));
     for i=1:numel(ax)
         if labels(i)==' ';
             continue;

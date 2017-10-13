@@ -64,6 +64,11 @@ function h=cpsText(varargin)
         AX=get(get(0,'CurrentFigure'),'CurrentAxes');
     end
     
+    % Check that there is an Axes object to print the text in
+    if isempty(AX)
+        error('No Axes to print cpsText in');
+    end
+    
     % Get STR to print
     if numel(varargin)==0 || ~ischar(varargin{1}) && ~iscell(varargin{1})
         error('No string (or cell array of strings) to print');
@@ -176,7 +181,7 @@ function h=cpsText(varargin)
         end
         
         % Print the text
-        h=text(DX,DY,STR...
+        h=text(AX,DX,DY,STR...
             ,'VerticalAlignment',vAlign,'HorizontalAlignment',hAlign ...
             ,varargin{:},'Units','Normalized');
     end

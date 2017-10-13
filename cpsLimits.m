@@ -32,7 +32,7 @@ function lims=cpsLimits(varargin)
         if ~isnumeric(newLims)
             error('Axes limits should be a numeric vector');
         end
-        if numel(newLims)>lims
+        if numel(newLims)>numel(lims)
             error(['Too many limits (' num2str(numel(newLims)) ') for current ' num2str(numel(lims)/2) 'D-Axes.']);
         end
         idx = find(~isnan(newLims));

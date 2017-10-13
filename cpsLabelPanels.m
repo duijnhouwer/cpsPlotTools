@@ -66,8 +66,13 @@ function labelHandles=cpsLabelPanels(varargin)
     %   Part of <a href="matlab:help cpsPlotTools">cpsPlotTools</a>.
     %
     %   See also: text, cpsFindFig
+    %
+    % BUG 20161109: inadvertently resets colormap!
     
     %   Copyright 2016 Jacob Duijnhouwer
+    
+    
+  
  
     
     % Check that there are open figures
@@ -87,7 +92,7 @@ function labelHandles=cpsLabelPanels(varargin)
         varargin(1)=[];
     elseif isa(varargin{1},'matlab.ui.Figure') 
         % Get all the panels (axes-objects) in the specified figure
-        ax=cpsGetAxes('CurrentFigure');
+        ax=cpsGetAxes(varargin{1});
         varargin(1)=[];
     elseif isa(varargin{1},'matlab.graphics.axis.Axes')
         % Add labels to the (array of) Axes-object(s)

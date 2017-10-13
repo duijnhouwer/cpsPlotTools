@@ -46,8 +46,8 @@ function lh=cpsRefLine(varargin)
     %   overrides this default behavior.
     %
     %   Any further arguments are relayed to the internal plot command that
-    %   draws the lines. cpsRefLine('|','-','k--','LineWidth',5) draws a
-    %   thick, dashed black cross. The default LineWidth is 0.5.
+    %   draws the lines. cpsRefLine('+','k--','LineWidth',5) draws a
+    %   thick, dashed, red cross. The default LineWidth is 0.5.
     %
     %   H=cpsRefLine(...) returns the handles to the lines drawn (class:
     %   Line).

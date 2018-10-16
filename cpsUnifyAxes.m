@@ -89,6 +89,12 @@ function cpsUnifyAxes(varargin)
         error('Incorrect arguments, unexpected error');
     end
     
+    if numel(panels)<=1
+        % nothing to unify
+        return;
+    end
+        
+    
     % Check if the within and between arguments have been provided
     between = false;
     within = false;

@@ -4,7 +4,9 @@ function [h,created] = cpsFindFig(tag,varargin)
     %   TAG. Or, if a figure tagged with TAG already exists, brings it into
     %   focus.
     %
-    %   cpsFindFig takes 3 optional parameter-value pairs:
+    %   cpsFindFig(...,'clf') additionallly clears the window.
+    %
+    %   cpsFindFig takes these optional parameter-value pairs:
     %       Parameter   Value (default in brackets):
     %       'visible'   Figure visibility upon creation [true] | false
     %       'position'  Figure position in pixels [leftx topy wid hei],
@@ -26,11 +28,17 @@ function [h,created] = cpsFindFig(tag,varargin)
     if nargin==0
         error('Not enough input arguments, a figure name is required.');
     end
+    
+    % see if 'clf' flag has been provided
+    clf_flag=contains('clf',varargin,'IgnoreCase',true);
+    varargin(clf_flag)=[];
+    clf_flag=any(clf_flag); 
+    
     p=inputParser;
     p.addRequired('tag',@ischar);
-    p.addOptional('visible',true,@islogical);
-    p.addOptional('position',[],@(x)isempty(x) || isnumeric(x) && numel(x)==4);
-    p.addOptional('create',true,@(x)islogical(x) || x==1 || x==0);
+    p.addParameter('visible',true,@islogical);
+    p.addParameter('position',[],@(x)isempty(x) || isnumeric(x) && numel(x)==4);
+    p.addParameter('create',true,@(x)islogical(x) || x==1 || x==0);
     p.parse(tag,varargin{:});
     
     if p.Results.visible

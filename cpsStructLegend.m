@@ -1,4 +1,4 @@
-function lh=cpsStructLegend(ax,S,spaceCode)
+function [LEGH,OBJH,OUTH,OUTM] = cpsStructLegend(ax,S,spaceCode)
     
     % EXAMPLE 1:
     %   h.House=plot(rand(10,1));
@@ -56,7 +56,7 @@ function lh=cpsStructLegend(ax,S,spaceCode)
     notthere=isnan(handles);
     handles(notthere)=[];
     labels(notthere)=[];
-    lh=legend(ax,handles,labels,'location','best');
+    [LEGH,OBJH,OUTH,OUTM] = legend(ax,handles,labels);
     
 end
         

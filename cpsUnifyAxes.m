@@ -130,7 +130,7 @@ function cpsUnifyAxes(varargin)
     if ~ischar(axStr)
         error('Second argument should be string containing any or all of ''XYZC''.');
     end
-    if numel(axStr)~=numel(unique(upper(axStr)));
+    if numel(axStr)~=numel(unique(upper(axStr)))
         warning(['Second argument (''' axStr ''') contains one or more duplicates.']);
         axStr=unique(axStr);
     end

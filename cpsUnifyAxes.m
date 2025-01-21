@@ -109,7 +109,7 @@ function cpsUnifyAxes(varargin)
     if ~between && ~within
         % if between and within are both unspecified, use within if there
         % is only one panel to operate on, between otherwise
-        if numel(panels)==1
+        if isscalar(panels)
             within = true;
         else
             between = true;
@@ -122,7 +122,7 @@ function cpsUnifyAxes(varargin)
     % "within" was misspelled for example.
     if numel(varargin)>1
         error('Incorrect argument(s).');
-    elseif numel(varargin)==1
+    elseif isscalar(varargin)
         axStr=varargin{1};
     else
         axStr='XYZC';

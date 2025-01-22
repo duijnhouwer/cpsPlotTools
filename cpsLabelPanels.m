@@ -179,7 +179,7 @@ function labelHandles=cpsLabelPanels(varargin)
         ax(i).Units=oldUnits;
         if strcmpi(labelPos,'outside')
             xPos=-0.1*medianWid/wid;
-            yPos=1.05;
+            yPos=1.01;
         else
             xPos=0.05*medianWid/wid;
             yPos=0.95;

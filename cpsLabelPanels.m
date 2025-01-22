@@ -118,7 +118,7 @@ function labelHandles=cpsLabelPanels(varargin)
         % Check the values of labels
         if isempty(labels)
             labels=char('A'+(0:numel(ax)-1)); % ABCD... is the default
-        elseif numel(labels)==1
+        elseif isscalar(labels)
             if ~ischar(labels)
                 error(['Start-letter must be a char, but a ' class(labels) ' was provided.']);
             else
@@ -155,7 +155,7 @@ function labelHandles=cpsLabelPanels(varargin)
     % will be scaled to that width
     panelWids=nan(size(ax));
     for i=1:numel(ax)
-        if labels(i)==' ';
+        if labels(i)==' '
             continue;
         end
         oldUnits=ax(i).Units;
@@ -163,7 +163,7 @@ function labelHandles=cpsLabelPanels(varargin)
         panelWids(i)=ax(i).Position(3);
         ax(i).Units=oldUnits;
     end
-    medianWid=nanmedian(panelWids);
+    medianWid=median(panelWids,'omitnan');
     clear panelWids;
 
     %
@@ -172,25 +172,25 @@ function labelHandles=cpsLabelPanels(varargin)
         if isnan(labels(i))
             continue;
         end
-        axes(ax(i)); %#ok<LAXES>
+        %axes(ax(i));
         oldUnits=ax(i).Units;
         ax(i).Units='pixels';
         wid=ax(i).Position(3);
         ax(i).Units=oldUnits;
         if strcmpi(labelPos,'outside')
             xPos=-0.1*medianWid/wid;
-            yPos=1;
+            yPos=1.05;
         else
             xPos=0.05*medianWid/wid;
             yPos=0.95;
             % warning('need to make hei also adaptive to different panel heights')
         end
         try
-            t=text(xPos,1,labels(i),varargin{:},'Units','normalized');
+            t=text(ax(i),xPos,yPos,labels(i),varargin{:},'Units','normalized');
         catch me
             try
                 warning(me.message)
-                t=text(xPos,1,labels(i),'Units','normalized');
+                t=text(ax(i),xPos,yPos,labels(i),'Units','normalized');
             catch me
                 rethrow(me);
             end
